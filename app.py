@@ -15,7 +15,7 @@ class NetworkApp(ABC):
         self.json_file = json_file
         self.of_controller = of_controller
         self.priority = priority
-        self.rules = [] # list of OpenFlow Rule objects to be sent to switches
+        self.rules = []  # list of OpenFlow Rule objects to be sent to switches
 
     # Send the `rule` to a specific Ryu's `datapath`
     # Notice that this function should be called by `self.send_openflow_rules`
@@ -40,7 +40,7 @@ class NetworkApp(ABC):
         dst_port = match_pattern.dst_port
         in_port = match_pattern.in_port
         kwargs = {'eth_type': 0x800}
-        
+
         if src_mac:
             kwargs['eth_src'] = src_mac
         if dst_mac:
@@ -68,14 +68,18 @@ class NetworkApp(ABC):
 
         of_match = ofp_parser.OFPMatch(**kwargs)
         if rule.action.action_type == ActionType.DROP:
-            self.of_controller.add_flow(datapath, match=of_match, actions=[], priority=self.priority)
+            self.of_controller.add_flow(
+                datapath, match=of_match, actions=[], priority=self.priority)
         elif rule.action.action_type == ActionType.CONTROLLER:
-            of_actions = [ofp_parser.OFPActionOutput(ofp.OFPP_CONTROLLER, ofp.OFPCML_NO_BUFFER)]
-            self.of_controller.add_flow(datapath, match=of_match, actions=of_actions, priority=self.priority)
+            of_actions = [ofp_parser.OFPActionOutput(
+                ofp.OFPP_CONTROLLER, ofp.OFPCML_NO_BUFFER)]
+            self.of_controller.add_flow(
+                datapath, match=of_match, actions=of_actions, priority=self.priority)
         elif rule.action.action_type == ActionType.FORWARD:
             of_actions = [ofp_parser.OFPActionOutput(rule.action.out_port)]
-            self.of_controller.add_flow(datapath, match=of_match, actions=of_actions, priority=self.priority)
-    
+            self.of_controller.add_flow(
+                datapath, match=of_match, actions=of_actions, priority=self.priority)
+
     # Send the OpenFlow rules in `self.rules` to corresponding switches
     def send_openflow_rules(self):
         for rule in self.rules:
@@ -84,13 +88,13 @@ class NetworkApp(ABC):
                 datapath = self.of_controller.datapaths.get(dpid, None)
                 if datapath:
                     self.send_openflow_rules_to_dp(rule, datapath)
-    
+
     # Given a `path` and a `match_pattern` for every switch along the path:
     # Calculate the list of OpenFlow rules representing this path
     # If include_in_port=True, then the `match_pattern` should include the in_port from `find_ports_per_switch`
     def calculate_rules_for_path(self, path, match_pattern, include_in_port=True):
         rules = []
-        segments = find_ports_per_switch(self.topo, path) 
+        segments = find_ports_per_switch(self.topo, path)
         for path_seg in segments:
             switch_id = path_seg[0]
             in_port = path_seg[1]
@@ -99,17 +103,18 @@ class NetworkApp(ABC):
                 match_pattern.in_port = in_port
             pattern = MatchPattern(**match_pattern.__dict__)
             action = Action(ActionType.FORWARD, out_port=out_port)
-            rule = Rule(switch_id=int(switch_id), match_pattern=pattern, action=action)
+            rule = Rule(switch_id=int(switch_id),
+                        match_pattern=pattern, action=action)
             rules.append(rule)
         return rules
 
     def add_rule(self, rule):
         self.rules.append(rule)
-    
+
     @abstractmethod
     def to_json(self, json_file):
         pass
-    
+
     @abstractmethod
     def from_json(self, json_file):
         pass

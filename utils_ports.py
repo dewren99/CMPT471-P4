@@ -10,6 +10,8 @@ def get_out_port_for_src(graph, src, dst):
     return None
 
 # For a link connected by a src-dst, return the input port at dst from src to dst
+
+
 def get_in_port_for_dst(graph, src, dst):
     start_port = 2
     for n2 in sorted(graph.neighbors(dst)):
@@ -20,6 +22,8 @@ def get_in_port_for_dst(graph, src, dst):
 
 # Find the input and output ports for every switch along a `path`
 # The output is a list of tuples of (switch_id, in_port, out_port).
+
+
 def find_ports_per_switch(graph, path):
     path_with_ports = []
     pairs = []

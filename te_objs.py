@@ -7,7 +7,8 @@ class PassByPathObjective:
     def __str__(self):
         switches = ' -> '.join(str(sw) for sw in self.switches)
         if self.symmetric:
-            switches_rev = ' -> '.join(reversed(str(sw) for sw in self.switches))
+            switches_rev = ' -> '.join(reversed(str(sw)
+                                       for sw in self.switches))
             return 'PassByPathObj: [%s] and [%s]\n\r\t%s' % (switches, switches_rev, self.match_pattern)
         return 'PassByPathObj: [%s]\n\r\t%s' % (switches, self.match_pattern)
 
@@ -31,7 +32,7 @@ class MaxBandwidthObjective:
         self.src_switch = src_switch
         self.dst_switch = dst_switch
         self.symmetric = symmetric
-    
+
     def __str__(self):
         if self.symmetric:
             return 'MaxBandwidthObj: [%s->%s] and [%s->%s]\n\r\t%s' % (self.src_switch, self.dst_switch, self.dst_switch, self.src_switch, self.match_pattern)

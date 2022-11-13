@@ -2,6 +2,7 @@ from netaddr import *
 
 IP_BASE = '10.0.0.0/24'
 
+
 def get_mac(i, j=0):
     assert isinstance(i, int) and i > 0
     assert isinstance(j, int) and j >= 0
@@ -15,13 +16,16 @@ def get_mac(i, j=0):
         mac_address = non_zero_mac_i.zfill(12)
     else:
         mac_address = non_zero_mac_i.zfill(6) + non_zero_mac_j.zfill(6)
-    mac_address_list = [mac_address[i:i + 2] for i in range(0, len(mac_address), 2)]
+    mac_address_list = [mac_address[i:i + 2]
+                        for i in range(0, len(mac_address), 2)]
     return ':'.join(mac_address_list)
+
 
 def get_ip(i, base):
     assert isinstance(i, int) and i > 0
     ip_base = IPNetwork(base)
     return str(IPAddress(int(ip_base.ip) + i))
+
 
 def mn_get_host_mac(i):
     """ Returns MAC address given a Mininet host id

@@ -19,7 +19,8 @@ app_te.add_pass_by_path_obj(pass_by_obj)
 
 # Obj 3: All UDP traffic from switch 1 to switch 6 and in the reverse direction should go through min-latency paths
 pattern = MatchPattern(ip_proto=17)
-min_lat_obj = MinLatencyObjective(pattern, src_switch=1, dst_switch=6, symmetric=True)
+min_lat_obj = MinLatencyObjective(
+    pattern, src_switch=1, dst_switch=6, symmetric=True)
 app_te.add_min_latency_obj(min_lat_obj)
 
 # Write the objectives (not the OpenFlow rules) to a JSON file
