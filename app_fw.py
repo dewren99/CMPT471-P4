@@ -23,7 +23,17 @@ class FirewallApp(NetworkApp):
     def from_json(self):
         with open('%s' % self.json_file) as f:
             rules = json.load(f, object_hook=parse_action)
-            # TODO: complete
+            self.rules = []
+            for rule in rules:
+                match_pattern = MatchPattern(
+                    **rule['match_pattern']
+                )
+                action = Action(
+                    **rule['action']
+                )
+                switch_id = rule['switch_id']
+                rule = Rule(match_pattern, action, switch_id)
+                self.rules.append(rule)
 
     # Writes the firewall policy to a JSON file
     def to_json(self, json_file):

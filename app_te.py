@@ -32,8 +32,13 @@ class TEApp(NetworkApp):
     #       self.max_bandwidth_obj
     def from_json(self):
         with open('%s' % self.json_file) as f:
-            # TODO: complete
-            pass
+            json_dict = json.load(f)
+            self.pass_by_paths_obj = [
+                PassByPathObjective(**obj) for obj in json_dict['pass_by_paths']]
+            self.min_latency_obj = [
+                MinLatencyObjective(**obj) for obj in json_dict['min_latency']]
+            self.max_bandwidth_obj = [
+                MaxBandwidthObjective(**obj) for obj in json_dict['max_bandwidth']]
 
     # Translates the TE objectives to the `json_file`
     def to_json(self, json_file):
@@ -54,7 +59,10 @@ class TEApp(NetworkApp):
     #   call `self.send_openflow_rules()` at the end
     def provision_pass_by_paths(self):
         self.rules = []
-        # TODO: complete
+        for obj in self.pass_by_paths_obj:
+            self.calculate_rules_for_path(
+                obj.src_ip, obj.dst, obj.path, obj.symmetric)
+        self.send_openflow_rules()
 
     # This function translates the objectives in `self.min_latency_obj` to a list of Rules in `self.rules`
     # It should:
@@ -62,9 +70,14 @@ class TEApp(NetworkApp):
     #   consider using the function `networkx.shortest_path` in the networkx package
     #   handle traffic in reverse direction when `symmetric` is True
     #   call `self.send_openflow_rules()` at the end
+
     def provision_min_latency_paths(self):
         self.rules = []
-        # TODO: complete
+        for obj in self.min_latency_obj:
+            path = nx.shortest_path(self.topo, obj.src, obj.dst)
+            self.calculate_rules_for_path(
+                obj.src, obj.dst, path, obj.symmetric)
+        self.send_openflow_rules()
 
     # BONUS:
     # This function translates the objectives in `self.max_bandwidth_obj` to a list of Rules in `self.rules`

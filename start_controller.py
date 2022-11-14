@@ -98,6 +98,7 @@ class ControllerInterface(ControllerBase):
         # Initializes `app_fw` in `controller` and calls `from_json`
         # Calls `calculate_firewall_rules`
         # Returns status code 200
+        print('Firewall started')
         controller.app_fw = FirewallApp(input_file, controller)
         controller.app_fw.from_json()
         controller.app_fw.calculate_firewall_rules()
