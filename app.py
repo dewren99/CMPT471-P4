@@ -83,6 +83,8 @@ class NetworkApp(ABC):
     # Send the OpenFlow rules in `self.rules` to corresponding switches
     def send_openflow_rules(self):
         for rule in self.rules:
+            print(type(rule))
+            print(dir(rule))
             dpid = rule.switch_id
             if self.of_controller:
                 datapath = self.of_controller.datapaths.get(dpid, None)

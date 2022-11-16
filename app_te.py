@@ -34,40 +34,40 @@ class TEApp(NetworkApp):
         with open('%s' % self.json_file) as f:
             json_dict = json.load(f)
             print('from_json')
-            self.pass_by_paths_obj = [
-                PassByPathObjective(**obj) for obj in json_dict['pass_by_paths']]
-            self.min_latency_obj = [
-                MinLatencyObjective(**obj) for obj in json_dict['min_latency']]
-            self.max_bandwidth_obj = [
-                MaxBandwidthObjective(**obj) for obj in json_dict['max_bandwidth']]
-            # self.pass_by_paths_obj = []
-            # for obj in json_dict['pass_by_paths']:
-            #     match_pattern = MatchPattern(**obj['match_pattern'])
-            #     switches = obj['switches']
-            #     symmetric = obj['symmetric']
-            #     pass_by_obj = PassByPathObjective(
-            #         match_pattern, switches, symmetric)
-            #     self.pass_by_paths_obj.append(pass_by_obj)
+            # self.pass_by_paths_obj = [
+            #     PassByPathObjective(**obj) for obj in json_dict['pass_by_paths']]
+            # self.min_latency_obj = [
+            #     MinLatencyObjective(**obj) for obj in json_dict['min_latency']]
+            # self.max_bandwidth_obj = [
+            #     MaxBandwidthObjective(**obj) for obj in json_dict['max_bandwidth']]
+            self.pass_by_paths_obj = []
+            for obj in json_dict['pass_by_paths']:
+                match_pattern = MatchPattern(**obj['match_pattern'])
+                switches = [str(s) for s in obj['switches']]
+                symmetric = obj['symmetric']
+                pass_by_obj = PassByPathObjective(
+                    match_pattern, switches, symmetric)
+                self.pass_by_paths_obj.append(pass_by_obj)
 
-            # self.min_latency_obj = []
-            # for obj in json_dict['min_latency']:
-            #     match_pattern = MatchPattern(**obj['match_pattern'])
-            #     src_switch = obj['src_switch']
-            #     dst_switch = obj['dst_switch']
-            #     symmetric = obj['symmetric']
-            #     min_lat_obj = MinLatencyObjective(
-            #         match_pattern, src_switch, dst_switch, symmetric)
-            #     self.min_latency_obj.append(min_lat_obj)
+            self.min_latency_obj = []
+            for obj in json_dict['min_latency']:
+                match_pattern = MatchPattern(**obj['match_pattern'])
+                src_switch = obj['src_switch']
+                dst_switch = obj['dst_switch']
+                symmetric = obj['symmetric']
+                min_lat_obj = MinLatencyObjective(
+                    match_pattern, src_switch, dst_switch, symmetric)
+                self.min_latency_obj.append(min_lat_obj)
 
-            # self.max_bandwidth_obj = []
-            # for obj in json_dict['max_bandwidth']:
-            #     match_pattern = MatchPattern(**obj['match_pattern'])
-            #     src_switch = obj['src_switch']
-            #     dst_switch = obj['dst_switch']
-            #     symmetric = obj['symmetric']
-            #     max_bw_obj = MaxBandwidthObjective(
-            #         match_pattern, src_switch, dst_switch, symmetric)
-            #     self.max_bandwidth_obj.append(max_bw_obj)
+            self.max_bandwidth_obj = []
+            for obj in json_dict['max_bandwidth']:
+                match_pattern = MatchPattern(**obj['match_pattern'])
+                src_switch = obj['src_switch']
+                dst_switch = obj['dst_switch']
+                symmetric = obj['symmetric']
+                max_bw_obj = MaxBandwidthObjective(
+                    match_pattern, src_switch, dst_switch, symmetric)
+                self.max_bandwidth_obj.append(max_bw_obj)
 
     # Translates the TE objectives to the `json_file`
     def to_json(self, json_file):
@@ -91,7 +91,7 @@ class TEApp(NetworkApp):
         for obj in self.pass_by_paths_obj:
             rules = self.calculate_rules_for_path(
                 obj.switches, obj.match_pattern, obj.symmetric)
-            self.rules.append(rules)
+            self.rules.extend(rules)
         self.send_openflow_rules()
 
     # This function translates the objectives in `self.min_latency_obj` to a list of Rules in `self.rules`
@@ -104,12 +104,12 @@ class TEApp(NetworkApp):
     def provision_min_latency_paths(self):
         self.rules = []
         for obj in self.min_latency_obj:
-            path = nx.shortest_path(self.topo, obj.src, obj.dst)
-            print('|||||||||||')
-            print('Provisioning min latency path: %s' % obj)
-            print(obj)
-            self.calculate_rules_for_path(
+            src_str = str(obj.src_switch)
+            dst_str = str(obj.dst_switch)
+            path = nx.shortest_path(self.topo, src_str, dst_str)
+            rules = self.calculate_rules_for_path(
                 path, obj.match_pattern, obj.symmetric)
+            self.rules.extend(rules)
         self.send_openflow_rules()
 
     # BONUS:

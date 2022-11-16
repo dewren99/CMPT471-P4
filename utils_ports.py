@@ -34,8 +34,6 @@ def find_ports_per_switch(graph, path):
         prev_node = node
 
     in_port = 1
-    print("pairs: ", pairs)
-    print("graph: ", graph.edges)
     for n1, n2 in pairs:
         out_port = get_out_port_for_src(graph, n1, n2)
         path_with_ports.append((n1, in_port, out_port))
