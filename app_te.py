@@ -86,6 +86,10 @@ class TEApp(NetworkApp):
             rules = self.calculate_rules_for_path(
                 obj.switches, obj.match_pattern, obj.symmetric)
             self.rules.extend(rules)
+            if (obj.symmetric):
+                rules_reverse = self.calculate_rules_for_path(
+                    obj.switches[::-1], obj.match_pattern, obj.symmetric)
+                self.rules.extend(rules_reverse)
         self.send_openflow_rules()
 
     # This function translates the objectives in `self.min_latency_obj` to a list of Rules in `self.rules`
@@ -104,12 +108,13 @@ class TEApp(NetworkApp):
                 self.topo, src_str, dst_str, weight='delay')
             rules = self.calculate_rules_for_path(
                 path, obj.match_pattern, obj.symmetric)
-            path_reverse = nx.shortest_path(
-                self.topo, dst_str, src_str, weight='delay')
-            rules_reverse = self.calculate_rules_for_path(
-                path_reverse, obj.match_pattern, obj.symmetric)
             self.rules.extend(rules)
-            self.rules.extend(rules_reverse)
+            if (obj.symmetric):
+                path_reverse = nx.shortest_path(
+                    self.topo, dst_str, src_str, weight='delay')
+                rules_reverse = self.calculate_rules_for_path(
+                    path_reverse, obj.match_pattern, obj.symmetric)
+                self.rules.extend(rules_reverse)
         self.send_openflow_rules()
 
     # BONUS:
