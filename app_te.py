@@ -33,13 +33,7 @@ class TEApp(NetworkApp):
     def from_json(self):
         with open('%s' % self.json_file) as f:
             json_dict = json.load(f)
-            print('from_json')
-            # self.pass_by_paths_obj = [
-            #     PassByPathObjective(**obj) for obj in json_dict['pass_by_paths']]
-            # self.min_latency_obj = [
-            #     MinLatencyObjective(**obj) for obj in json_dict['min_latency']]
-            # self.max_bandwidth_obj = [
-            #     MaxBandwidthObjective(**obj) for obj in json_dict['max_bandwidth']]
+
             self.pass_by_paths_obj = []
             for obj in json_dict['pass_by_paths']:
                 match_pattern = MatchPattern(**obj['match_pattern'])
@@ -106,10 +100,16 @@ class TEApp(NetworkApp):
         for obj in self.min_latency_obj:
             src_str = str(obj.src_switch)
             dst_str = str(obj.dst_switch)
-            path = nx.shortest_path(self.topo, src_str, dst_str)
+            path = nx.shortest_path(
+                self.topo, src_str, dst_str, weight='delay')
             rules = self.calculate_rules_for_path(
                 path, obj.match_pattern, obj.symmetric)
+            path_reverse = nx.shortest_path(
+                self.topo, dst_str, src_str, weight='delay')
+            rules_reverse = self.calculate_rules_for_path(
+                path_reverse, obj.match_pattern, obj.symmetric)
             self.rules.extend(rules)
+            self.rules.extend(rules_reverse)
         self.send_openflow_rules()
 
     # BONUS:

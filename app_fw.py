@@ -28,11 +28,11 @@ class FirewallApp(NetworkApp):
                 match_pattern = MatchPattern(
                     **rule['match_pattern']
                 )
-                action = Action(
-                    **rule['action']
-                )
+                action_type = ActionType(rule['action']['action_type'])
+                out_port = rule['action']['out_port']
+                action = Action(action_type, out_port)
                 switch_id = rule['switch_id']
-                rule = Rule(match_pattern, action, switch_id)
+                rule = Rule(switch_id, match_pattern, action)
                 self.rules.append(rule)
 
     # Writes the firewall policy to a JSON file
