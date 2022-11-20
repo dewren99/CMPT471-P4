@@ -1,0 +1,20 @@
+-----------------------------------------------------------
+Server listening on 5050
+-----------------------------------------------------------
+Accepted connection from 10.0.0.1, port 56011
+[  6] local 10.0.0.6 port 5050 connected to 10.0.0.1 port 5050
+[ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
+[  6]   0.00-1.03   sec  96.1 KBytes   764 Kbits/sec  7.297 ms  0/82 (0%)  
+[  6]   1.03-2.01   sec   135 KBytes  1.12 Mbits/sec  2.191 ms  0/115 (0%)  
+[  6]   2.01-3.00   sec   129 KBytes  1.07 Mbits/sec  5.116 ms  0/110 (0%)  
+[  6]   3.00-4.01   sec   131 KBytes  1.07 Mbits/sec  8.650 ms  0/112 (0%)  
+[  6]   4.01-5.00   sec   124 KBytes  1.03 Mbits/sec  2.165 ms  0/106 (0%)  
+[  6]   5.00-6.02   sec   111 KBytes   898 Kbits/sec  14.725 ms  0/95 (0%)  
+[  6]   6.02-7.01   sec   148 KBytes  1.22 Mbits/sec  4.963 ms  0/126 (0%)  
+[  6]   7.01-8.00   sec   127 KBytes  1.05 Mbits/sec  2.416 ms  0/108 (0%)  
+[  6]   8.00-9.00   sec   130 KBytes  1.06 Mbits/sec  8.503 ms  0/111 (0%)  
+[  6]   9.00-10.00  sec   124 KBytes  1.02 Mbits/sec  2.256 ms  0/106 (0%)  
+[  6]  10.00-10.14  sec  14.1 KBytes   858 Kbits/sec  2.592 ms  0/12 (0%)  
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Jitter    Lost/Total Datagrams
+[  6]   0.00-10.14  sec  0.00 Bytes  0.00 bits/sec  2.592 ms  0/1083 (0%)  

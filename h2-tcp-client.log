@@ -1,0 +1,19 @@
+Connecting to host 10.0.0.5, port 5050
+[  4] local 10.0.0.2 port 5050 connected to 10.0.0.5 port 5050
+[ ID] Interval           Transfer     Bandwidth       Retr  Cwnd
+[  4]   0.00-1.02   sec   785 KBytes  6.29 Mbits/sec    0   70.7 KBytes       
+[  4]   1.02-2.00   sec   255 KBytes  2.13 Mbits/sec    0   82.0 KBytes       
+[  4]   2.00-3.00   sec   382 KBytes  3.12 Mbits/sec    0   94.7 KBytes       
+[  4]   3.00-4.00   sec   827 KBytes  6.78 Mbits/sec    0    127 KBytes       
+[  4]   4.00-5.00   sec   318 KBytes  2.60 Mbits/sec    0    141 KBytes       
+[  4]   5.00-6.02   sec   827 KBytes  6.65 Mbits/sec    0    174 KBytes       
+[  4]   6.02-7.00   sec   382 KBytes  3.19 Mbits/sec    0    205 KBytes       
+[  4]   7.00-8.01   sec   764 KBytes  6.20 Mbits/sec    0    276 KBytes       
+[  4]   8.01-9.02   sec   700 KBytes  5.66 Mbits/sec    0    358 KBytes       
+[  4]   9.02-10.00  sec  1.49 MBytes  12.8 Mbits/sec    0    501 KBytes       
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval           Transfer     Bandwidth       Retr
+[  4]   0.00-10.00  sec  6.61 MBytes  5.54 Mbits/sec    0             sender
+[  4]   0.00-10.00  sec  4.39 MBytes  3.68 Mbits/sec                  receiver
+
+iperf Done.
